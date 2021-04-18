@@ -64,7 +64,7 @@ router.post('/register', async(req, res, next) => {
             return res.status(200).json(addedUser)
         }
     } catch (err) {
-        next(err)
+        res.status(400).json({ message: 'username and password required' })
     }
 });
 
