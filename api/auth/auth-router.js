@@ -23,6 +23,18 @@ async function addUser(user) {
     return newUser;
 }
 
+function getToken(user) {
+    const payload = {
+        subject: user.id,
+        username: user.username
+    }
+    const options = {
+        expiresIn: '1h'
+    }
+    const secret = secrets.jwtSecret
+    return jwt.sign(payload, secret, options) //should generate signature
+}
+
 router.post('/register', async(req, res, next) => {
     // res.end('implement register, please!');
     /*
@@ -101,9 +113,9 @@ router.post('/login', async(req, res) => {
         } else if (user) {
             let checkPass = bcrypt.compareSync(password, user.password);
             if (checkPass) {
-                jwt.sign({ username: user.username }, jwtSecret, (err, token) => {
-                    return res.status(200).json({ message: `welcome, ${user.username}`, token: 'token' })
-                })
+                const token = getToken(user)
+                return res.status(200).json({ message: `welcome, ${user.username}`, token })
+
             } else {
                 return res.status(400).json({ message: 'invalid credentials' })
             }
