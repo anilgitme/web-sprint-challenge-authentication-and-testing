@@ -102,11 +102,17 @@ router.post('/login', async(req, res) => {
             let checkPass = bcrypt.compareSync(password, user.password);
             if (checkPass) {
                 jwt.sign({ username: user.username }, jwtSecret, (err, token) => {
-                    return res.status(200).json({ message: `welcome, ${user.username}`, token })
+                    if (err) {
+                        return res.status(401).json({ message: 'error logging in' })
+                    } else {
+                        return res.status(200).json({ message: `welcome, ${user.username}`, token })
+                    }
                 })
             } else {
                 return res.status(400).json({ message: 'invalid credentials' })
             }
+        } else {
+            return res.status(400).json({ message: 'invalid credentials' })
         }
     } catch (err) {
         res.status(404).json({ message: 'login failed' })
