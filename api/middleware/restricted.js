@@ -4,7 +4,7 @@ const jwtSecret = require('../../config/secrets');
 module.exports = (req, res, next) => {
     const token = req.headers.Authorization;
     if (!token) {
-        res.status(404).json({ message: 'token invalid' })
+        res.status(404).json({ message: 'token required' })
     } else {
         jwt.verify(token, jwtSecret, (err, decoded) => {
             if (err) {
