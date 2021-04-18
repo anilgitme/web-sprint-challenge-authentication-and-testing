@@ -98,7 +98,7 @@ router.post('/login', async(req, res) => {
         const { username, password } = req.body;
         const user = await findUser(username);
         if (!username || !password) {
-            return res.status(400).json({ message: 'username and password required' })
+            return res.status(400).json({ message: 'invalid credentials' })
         } else if (user) {
             let checkPass = bcrypt.compareSync(password, user.password);
             if (checkPass) {
