@@ -104,7 +104,6 @@ router.post('/login', async(req, res) => {
             if (checkPass) {
                 jwt.sign({ username: user.username }, jwtSecret, (err, token) => {
                     return res.status(200).json({ message: `welcome, ${user.username}`, token })
-
                 })
             } else {
                 return res.status(400).json({ message: 'invalid credentials' })
